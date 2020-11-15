@@ -176,6 +176,20 @@ def chat(message):
 
 
 
+# scheduler
+def scheduler():
+    lst_users = db.distinct(key="id")
+    for user in lst_users:
+        #res = requests.get("https://api.telegram.org/bot1494658770:"+config.telegram_key+"/sendMessage?chat_id="+user+"&text=yo")
+        dic_events = db.find_one({"id":dic_user["id"]})["events"]
+        today = datetime.datetime.today().strftime('%b %d')
+        logging.info(str(message.chat.username)+" - "+str(message.chat.id)+" --- CHECKING")
+        res = [k for k,v in dic_events.items() if v == today]
+        msg = "Today's events: "+", ".join(res) if len(res) > 0 else "No events today"
+        bot.send_message(user, msg)
+
+
+
 # run
 if config.ENV == "DEV":
     bot.infinity_polling(True)  #bot.polling()
@@ -183,6 +197,8 @@ if config.ENV == "DEV":
 
 elif config.ENV == "PROD":
     import flask
+    import threading
+
     server = flask.Flask(__name__)
 
     @server.route('/'+config.telegram_key, methods=['POST'])
@@ -194,14 +210,9 @@ elif config.ENV == "PROD":
     def webhook():
         bot.remove_webhook()
         bot.set_webhook(url='https://botdatereminder.herokuapp.com/'+config.telegram_key)
-        #return "Chat with the Bot here  https://t.me/DatesReminderBot", 200
-        return 'Chat with the Bot  <a href ="https://t.me/DatesReminderBot">here</a>', 200
+        return '\nChat with the Bot  <a href ="https://t.me/DatesReminderBot">here</a> \
+        or Check the project code <a href ="https://github.com/mdipietro09/Bot_TelegramDatesReminder">here</a>', 200
 
     if __name__ == "__main__":
-
-        import requests
-        lst_users = db.distinct(key="id")
-        for user in lst_users:
-            res = requests.get("https://api.telegram.org/bot1494658770:"+config.telegram_key+"/sendMessage?chat_id="+user+"&text=yo")
-
+        threading.Thread(target=scheduler).start()
         server.run(host=config.host, port=config.port)
