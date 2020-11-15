@@ -9,14 +9,14 @@ import logging
 import datetime
 import dateparser
 import pymongo
-from keys import telegram_key, mongodb_key
+from settings import config
 
 ## bot
-bot = telebot.TeleBot(telegram_key)
+bot = telebot.TeleBot(config.telegram_key)
 dic_user = {}
 
 ## setup db
-client = pymongo.MongoClient(mongodb_key)
+client = pymongo.MongoClient(config.mongodb_key)
 db_name = "Telegram_DatesReminderBot"
 collection_name = "users"
 db = client[db_name][collection_name]
@@ -87,7 +87,7 @@ def save_event(message):
         db.update_one({"id":dic_user["id"]}, {"$set":{"events":dic_events}})
     
     ## send done
-    msg = name+" saved every "+date
+    msg = name+": "+date+" saved."
     bot.send_message(message.chat.id, msg)
 
 
