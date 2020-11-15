@@ -185,8 +185,9 @@ def scheduler():
         today = datetime.datetime.today().strftime('%b %d')
         logging.info("--- SCHEDULER ---")
         res = [k for k,v in dic_events.items() if v == today]
-        msg = "Today's events: "+", ".join(res) if len(res) > 0 else "No events today"
-        bot.send_message(user, msg)
+        if len(res) > 0:
+            msg = "Today's events: "+", ".join(res)
+            bot.send_message(user, msg)
 
 
 
