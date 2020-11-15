@@ -56,7 +56,6 @@ You can always check for today's event with \n/check"
 # /save
 @bot.message_handler(commands=['save'])
 def _save(message):
-    ## ask name
     msg = "Set an event in the format 'month dd', for example: \n\
             xmas day: Dec 25 \n\
 I also understand: \n\
