@@ -194,13 +194,14 @@ elif config.ENV == "PROD":
     def webhook():
         bot.remove_webhook()
         bot.set_webhook(url='https://botdatereminder.herokuapp.com/'+config.telegram_key)
-        return "Chat with the Bot here  https://t.me/DatesReminderBot", 200
+        #return "Chat with the Bot here  https://t.me/DatesReminderBot", 200
+        return 'Chat with the Bot  <a href ="https://t.me/DatesReminderBot">here</a>', 200
 
     if __name__ == "__main__":
 
         import requests
         lst_users = db.distinct(key="id")
         for user in lst_users:
-            res = requests.get("https://api.telegram.org/bot1494658770:"+config.telegram_key+"/sendMessage?chat_id="+user+"&text=/check")
+            res = requests.get("https://api.telegram.org/bot1494658770:"+config.telegram_key+"/sendMessage?chat_id="+user+"&text=yo")
 
         server.run(host=config.host, port=config.port)
