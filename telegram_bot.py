@@ -198,8 +198,9 @@ elif config.ENV == "PROD":
 
     if __name__ == "__main__":
 
+        import requests
         lst_users = db.distinct(key="id")
         for user in lst_users:
-            flask.request("https://api.telegram.org/bot1494658770:"+config.telegram_key+"/sendMessage?chat_id="+user+"&text=/check")
+            res = requests.get("https://api.telegram.org/bot1494658770:"+config.telegram_key+"/sendMessage?chat_id="+user+"&text=/check")
 
         server.run(host=config.host, port=config.port)
