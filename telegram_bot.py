@@ -179,11 +179,11 @@ def chat(message):
 # scheduler
 def scheduler():
     lst_users = db.distinct(key="id")
+    logging.info("--- SCHEDULER for "+str(len(lst_users))+" users ---")
     for user in lst_users:
         #res = requests.get("https://api.telegram.org/bot1494658770:"+config.telegram_key+"/sendMessage?chat_id="+user+"&text=yo")
         dic_events = db.find_one({"id":user})["events"]
         today = datetime.datetime.today().strftime('%b %d')
-        logging.info("--- SCHEDULER ---")
         res = [k for k,v in dic_events.items() if v == today]
         if len(res) > 0:
             msg = "Today's events: "+", ".join(res)
