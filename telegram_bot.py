@@ -175,5 +175,24 @@ def chat(message):
 
 
 # run
-#bot.polling()
-bot.infinity_polling(True)
+if config.ENV == "DEV":
+    bot.infinity_polling(True)  #bot.polling()
+
+
+elif config.ENV == "PROD":
+    import flask
+    server = flask.Flask(__name__)
+
+    @server.route('/'+config.telegram_key, methods=['POST'])
+    def getMessage():
+        bot.process_new_updates([telebot.types.Update.de_json(flask.request.stream.read().decode("utf-8"))])
+        return "!", 200
+
+    @server.route("/")
+    def webhook():
+        bot.remove_webhook()
+        bot.set_webhook(url='https://botdatereminder.herokuapp.com/'+config.telegram_key)
+        return "!", 200
+
+    if __name__ == "__main__":
+        server.run(host=config.host, port=config.port)
