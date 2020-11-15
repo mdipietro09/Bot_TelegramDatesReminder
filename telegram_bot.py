@@ -168,6 +168,8 @@ def chat(message):
     txt = message.text
     if any(x in txt.lower() for x in ["thank","thx","cool"]):
         msg = "anytime"
+    elif any(x in txt.lower() for x in ["hi","hello","yo"]):
+        msg = "yo"
     else:
         msg = "save a date with \n/save"
     bot.send_message(message.chat.id, msg)
@@ -192,7 +194,12 @@ elif config.ENV == "PROD":
     def webhook():
         bot.remove_webhook()
         bot.set_webhook(url='https://botdatereminder.herokuapp.com/'+config.telegram_key)
-        return "!", 200
+        return "Chat with the Bot here  https://t.me/DatesReminderBot", 200
 
     if __name__ == "__main__":
+
+        lst_users = db.distinct(key="id")
+        for user in lst_users:
+            flask.request("https://api.telegram.org/bot1494658770:"+config.telegram_key+"/sendMessage?chat_id="+user+"&text=/check")
+
         server.run(host=config.host, port=config.port)
