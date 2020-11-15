@@ -175,4 +175,5 @@ def chat(message):
 
 
 # run
-bot.polling()
+#bot.polling()
+bot.infinity_polling(True)

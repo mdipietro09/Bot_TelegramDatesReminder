@@ -1,4 +1,8 @@
 
+import os
+
+
+
 ## Keys
 #ENV = "DEV"
 ENV = "PROD"
@@ -15,11 +19,9 @@ elif ENV == "PROD":
 
 
 ## fs
-#import os
 #root = os.path.dirname(os.path.dirname(__file__)) + "/"
 
 
 ## hosting
-#import os
 #port = int(os.environ.get("PORT", 5000))
-#host = "0.0.0.0"
+#server = "0.0.0.0"
