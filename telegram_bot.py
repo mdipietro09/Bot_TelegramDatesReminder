@@ -169,7 +169,7 @@ def chat(message):
     if any(x in txt.lower() for x in ["thank","thx","cool"]):
         msg = "anytime"
     elif any(x in txt.lower() for x in ["hi","hello","yo"]):
-        msg = "yo"
+        msg = "yo" if str(message.chat.username) is "none" else "yo "+str(message.chat.username)
     else:
         msg = "save a date with \n/save"
     bot.send_message(message.chat.id, msg)
