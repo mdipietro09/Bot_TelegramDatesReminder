@@ -199,14 +199,14 @@ elif config.ENV == "PROD":
     import flask
     import threading
 
-    server = flask.Flask(__name__)
+    app = flask.Flask(__name__)
 
-    @server.route('/'+config.telegram_key, methods=['POST'])
+    @app.route('/'+config.telegram_key, methods=['POST'])
     def getMessage():
         bot.process_new_updates([telebot.types.Update.de_json(flask.request.stream.read().decode("utf-8"))])
         return "!", 200
 
-    @server.route("/")
+    @app.route("/")
     def webhook():
         bot.remove_webhook()
         bot.set_webhook(url='https://botdatereminder.herokuapp.com/'+config.telegram_key)
@@ -215,4 +215,4 @@ elif config.ENV == "PROD":
 
     if __name__ == "__main__":
         threading.Thread(target=scheduler).start()
-        server.run(host=config.host, port=config.port)
+        app.run(host=config.host, port=config.port)
