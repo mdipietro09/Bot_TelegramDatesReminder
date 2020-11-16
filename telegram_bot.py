@@ -60,7 +60,7 @@ def _save(message):
             xmas day: Dec 25 \n\
 I also understand: \n\
 today, tomorrow, in 3 days, in 1 week, in 6 months, yesterday, 3 days ago ... so you can do: \n\
-            meeting: tomorrow"
+            anniversary: tomorrow"
     message = bot.reply_to(message, msg)
     bot.register_next_step_handler(message, save_event)
 
