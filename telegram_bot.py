@@ -177,7 +177,8 @@ def chat(message):
 
 # scheduler
 def scheduler():
-    if datetime.datetime.now().strftime("%H:%M") == "13:00":
+    logging.info(datetime.datetime.now().strftime("%H:%M"))
+    if datetime.datetime.now().strftime("%H:%M") == "13:30":
         lst_users = db.distinct(key="id")
         logging.info("--- SCHEDULER for "+str(len(lst_users))+" users ---")
         for user in lst_users:
