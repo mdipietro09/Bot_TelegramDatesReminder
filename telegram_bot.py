@@ -167,8 +167,8 @@ def chat(message):
     txt = message.text
     if any(x in txt.lower() for x in ["thank","thx","cool"]):
         msg = "anytime"
-    elif any(x in txt.lower() for x in ["hi","hello","yo"]):
-        msg = "yo" if str(message.chat.username) is "none" else "yo "+str(message.chat.username)
+    elif any(x in txt.lower() for x in ["hi","hello","yo","hey"]):
+        msg = "yo" if str(message.chat.username) == "none" else "yo "+str(message.chat.username)
     else:
         msg = "save a date with \n/save"
     bot.send_message(message.chat.id, msg)
@@ -177,16 +177,17 @@ def chat(message):
 
 # scheduler
 def scheduler():
-    lst_users = db.distinct(key="id")
-    logging.info("--- SCHEDULER for "+str(len(lst_users))+" users ---")
-    for user in lst_users:
-        #res = requests.get("https://api.telegram.org/bot1494658770:"+config.telegram_key+"/sendMessage?chat_id="+user+"&text=yo")
-        dic_events = db.find_one({"id":user})["events"]
-        today = datetime.datetime.today().strftime('%b %d')
-        res = [k for k,v in dic_events.items() if v == today]
-        if len(res) > 0:
-            msg = "Today's events: "+", ".join(res)
-            bot.send_message(user, msg)
+    if datetime.datetime.now().strftime("%H:%M") == "13:00":
+        lst_users = db.distinct(key="id")
+        logging.info("--- SCHEDULER for "+str(len(lst_users))+" users ---")
+        for user in lst_users:
+            #res = requests.get("https://api.telegram.org/bot1494658770:"+config.telegram_key+"/sendMessage?chat_id="+user+"&text=yo")
+            dic_events = db.find_one({"id":user})["events"]
+            today = datetime.datetime.today().strftime('%b %d')
+            res = [k for k,v in dic_events.items() if v == today]
+            if len(res) > 0:
+                msg = "Today's events: "+", ".join(res)
+                bot.send_message(user, msg)
 
 
 
