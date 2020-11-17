@@ -177,9 +177,8 @@ def chat(message):
 
 # scheduler
 def scheduler():
-    #if datetime.datetime.now().strftime("%H:%M") in ["13:00","13:01","14:00","14:01"]:
     lst_users = db.distinct(key="id")
-    logging.info("--- SCHEDULER for "+str(len(lst_users))+" users ---"+datetime.datetime.now().strftime("%H:%M"))
+    logging.info("--- SCHEDULER for "+str(len(lst_users))+" users ---")
     for user in lst_users:
         #res = requests.get("https://api.telegram.org/bot1494658770:"+config.telegram_key+"/sendMessage?chat_id="+user+"&text=yo")
         dic_events = db.find_one({"id":user})["events"]
@@ -215,5 +214,6 @@ elif config.ENV == "PROD":
           or   Check the project code <a href ="https://github.com/mdipietro09/Bot_TelegramDatesReminder">here</a>', 200
 
     if __name__ == "__main__":
-        threading.Thread(target=scheduler).start()
+        if datetime.datetime.now().strftime("%H:%M") in ["06:00","07:00"]:
+            threading.Thread(target=scheduler).start()
         app.run(host=config.host, port=config.port)
