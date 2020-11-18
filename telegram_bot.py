@@ -214,6 +214,6 @@ elif config.ENV == "PROD":
           or   Check the project code <a href ="https://github.com/mdipietro09/Bot_TelegramDatesReminder">here</a>', 200
 
     if __name__ == "__main__":
-        if datetime.datetime.now().strftime("%H:%M") in ["06:00","07:00"]:
+        if datetime.datetime.now().strftime("%H:%M") in ["06:00","06:01","07:00","07:01"]:
             threading.Thread(target=scheduler).start()
         app.run(host=config.host, port=config.port)
