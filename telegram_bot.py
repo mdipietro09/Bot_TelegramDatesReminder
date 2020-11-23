@@ -21,7 +21,7 @@ db_name = "Telegram_DatesReminderBot"
 collection_name = "users"
 db = client[db_name][collection_name]
 
-# logging
+## logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -126,8 +126,9 @@ def _view(message):
     ## query
     else:
         dic_events = db.find_one({"id":dic_user["id"]})["events"]
+        dic_events_sorted = {k:v for k,v in sorted(dic_events.items(), key=lambda item:item[0])}
         logging.info(str(message.chat.username)+" - "+str(message.chat.id)+" --- VIEW ALL")
-        msg = "\n".join(k+": "+v for k,v in dic_events.items())
+        msg = "\n".join(k+": "+v for k,v in dic_events_sorted.items())
     
     bot.send_message(message.chat.id, msg)
 
