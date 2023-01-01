@@ -4,3 +4,4 @@ Flask==1.1.2
 dateparser==1.0.0
 dnspython==1.16.0
 Jinja2==2.11.2
+MarkupSafe==1.1.1
